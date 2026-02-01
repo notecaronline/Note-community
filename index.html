@@ -3,62 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CarNote Online - ตลาดรถมือสองคุณภาพ</title>
+    <title>CarNote Online - Admin System</title>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
-    
     <style>
-        :root { --accent: #f97316; --dark: #0f172a; --bg: #f8fafc; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding-bottom: 50px; }
-        nav { background: var(--dark); color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; }
-        nav h1 { margin: 0; font-size: 1.4rem; color: var(--accent); }
-        .container { width: 92%; max-width: 600px; margin: 20px auto; }
-        .car-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .car-img { width: 100%; height: 220px; object-fit: cover; }
-        .car-info { padding: 15px; border-bottom: 1px solid #f1f5f9; }
-        .community-box { background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .input-group { display: flex; flex-direction: column; gap: 10px; }
-        input { padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; }
-        input:focus { border-color: var(--accent); }
-        .btn-send { background: var(--accent); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .btn-send:active { transform: scale(0.98); }
-        .comment-list { list-style: none; padding: 0; margin-top: 20px; }
-        .comment-item { background: #f1f5f9; padding: 12px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid var(--accent); }
-        .user-tag { font-weight: bold; color: var(--accent); font-size: 0.85rem; display: block; }
-        .msg-text { margin-top: 4px; display: block; color: var(--dark); }
+        :root { --accent: #f97316; --dark: #0f172a; --bg: #f1f5f9; --red: #ef4444; }
+        body { font-family: sans-serif; background: var(--bg); margin: 0; padding-bottom: 100px; }
+        nav { background: var(--dark); color: white; padding: 15px; text-align: center; }
+        .container { width: 92%; max-width: 800px; margin: 20px auto; }
+        
+        /* สไตล์โพสต์รถ */
+        .car-card { background: white; border-radius: 15px; overflow: hidden; margin-bottom: 25px; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .status-badge { position: absolute; top: 10px; right: 10px; padding: 5px 12px; border-radius: 20px; color: white; font-size: 0.8rem; font-weight: bold; }
+        .available { background: #22c55e; } .sold { background: var(--red); }
+        .car-img { width: 100%; height: 250px; object-fit: cover; }
+        .p-15 { padding: 15px; }
+
+        /* ระบบ Admin */
+        #adminPanel { background: #fff; padding: 20px; border-radius: 15px; margin-bottom: 30px; border: 2px dashed var(--accent); display: none; }
+        .admin-btn { background: var(--dark); color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        .del-btn { color: var(--red); cursor: pointer; font-size: 0.8rem; margin-left: 10px; border: none; background: none; }
+        
+        /* Modal Login */
+        #loginBox { position: fixed; bottom: 20px; right: 20px; }
+        .comment-item { background: #f8fafc; padding: 10px; border-radius: 8px; margin-top: 5px; font-size: 0.9rem; border-left: 3px solid #ddd; }
     </style>
 </head>
 <body>
 
 <nav>
-    <h1>CarNote Online</h1>
-    <span style="font-size: 0.8rem; opacity: 0.8;">Note Community Car</span>
+    <h1 style="margin:0;">CarNote Online</h1>
 </nav>
 
 <div class="container">
-    <div class="car-card">
-        <img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80" class="car-img" alt="Car">
-        <div class="car-info">
-            <h2 style="margin: 0; font-size: 1.2rem;">Ferrari 488 GTB</h2>
-            <p style="color: var(--accent); font-weight: bold; margin: 5px 0;">฿ 18,500,000</p>
-        </div>
+    <div id="adminPanel">
+        <h3>🛠 เครื่องมือแอดมิน (จัดการโพสต์)</h3>
+        <input type="text" id="carTitle" placeholder="ชื่อรุ่นรถ" style="width:100%; padding:10px; margin-bottom:10px;">
+        <input type="text" id="carPrice" placeholder="ราคา (เช่น 1,500,000)" style="width:100%; padding:10px; margin-bottom:10px;">
+        <input type="text" id="carImgUrl" placeholder="ลิงก์รูปภาพรถ" style="width:100%; padding:10px; margin-bottom:10px;">
+        <select id="carStatus" style="width:100%; padding:10px; margin-bottom:10px;">
+            <option value="available">ยังมีอยู่</option>
+            <option value="sold">ปิดการขาย</option>
+        </select>
+        <button class="admin-btn" style="background:var(--accent)" onclick="uploadPost()">🚀 โพสต์ประกาศขาย</button>
     </div>
 
-    <div class="community-box">
-        <h3 style="margin-top: 0;">💬 กระดานสนทนาออนไลน์</h3>
-        <div class="input-group">
-            <input type="text" id="usernameInput" placeholder="ตั้งชื่อเล่นของคุณ...">
-            <input type="text" id="messageInput" placeholder="พิมพ์คำถามหรือข้อความ...">
-            <button class="btn-send" onclick="sendToFirebase()">ส่งข้อความ</button>
-        </div>
-        <ul id="commentList" class="comment-list">
-            <li style="text-align: center; color: #94a3b8; font-size: 0.8rem;">กำลังเชื่อมต่อฐานข้อมูล...</li>
-        </ul>
-    </div>
+    <div id="carList"></div>
+</div>
+
+<div id="loginBox">
+    <button onclick="adminLogin()" style="opacity: 0.3; border: none; background: none;">⚙️</button>
 </div>
 
 <script>
-    // ข้อมูล Firebase ที่คุณภูผาส่งมา
+    // Firebase Config (ของคุณภูผา)
     const firebaseConfig = {
         apiKey: "AIzaSyANA3-UyKf-MS2dcmbAuPGt-KtRd0KTmGw",
         authDomain: "note-communitycar.firebaseapp.com",
@@ -66,54 +64,108 @@
         projectId: "note-communitycar",
         storageBucket: "note-communitycar.firebasestorage.app",
         messagingSenderId: "387457886547",
-        appId: "1:387457886547:web:d7e5f60fb7d2cdbf3ed9a6",
-        measurementId: "G-PRZCBY3V7K"
+        appId: "1:387457886547:web:d7e5f60fb7d2cdbf3ed9a6"
     };
-
-    // เริ่มต้นระบบ
     firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
+    const db = firebase.database();
 
-    // จำชื่อผู้ใช้ในเครื่อง
-    window.onload = function() {
-        const savedName = localStorage.getItem('carnote_user');
-        if (savedName) document.getElementById('usernameInput').value = savedName;
-    };
+    let isAdmin = false;
 
-    // ส่งข้อมูลไปออนไลน์
-    function sendToFirebase() {
-        const name = document.getElementById('usernameInput').value;
-        const msg = document.getElementById('messageInput').value;
-
-        if (name.trim() && msg.trim()) {
-            localStorage.setItem('carnote_user', name);
-            database.ref('comments').push().set({
-                username: name,
-                message: msg,
-                timestamp: Date.now()
-            });
-            document.getElementById('messageInput').value = ""; 
+    // ฟังก์ชัน Login แอดมิน
+    function adminLogin() {
+        const pass = prompt("กรุณากรอกรหัสผ่านแอดมิน:");
+        if (pass === "Note#2026!Car@Phupha99") {
+            isAdmin = true;
+            document.getElementById('adminPanel').style.display = 'block';
+            alert("ยินดีต้อนรับคุณภูผา (Admin)");
+            renderCars();
         } else {
-            alert("ใส่ชื่อและข้อความก่อนนะครับ");
+            alert("รหัสผ่านไม่ถูกต้อง!");
         }
     }
 
-    // ดึงข้อมูลมาโชว์แบบ Realtime
-    database.ref('comments').limitToLast(20).on('value', (snapshot) => {
-        const list = document.getElementById('commentList');
-        list.innerHTML = "";
-        const data = snapshot.val();
-        if (data) {
-            Object.values(data).reverse().forEach(item => {
-                const li = document.createElement('li');
-                li.className = 'comment-item';
-                li.innerHTML = `<span class="user-tag">@${item.username}</span><span class="msg-text">${item.message}</span>`;
-                list.appendChild(li);
+    // อัปโหลดโพสต์ใหม่
+    function uploadPost() {
+        const title = document.getElementById('carTitle').value;
+        const price = document.getElementById('carPrice').value;
+        const img = document.getElementById('carImgUrl').value;
+        const status = document.getElementById('carStatus').value;
+
+        if(title && price && img) {
+            db.ref('cars').push({
+                title, price, img, status, time: Date.now()
             });
-        } else {
-            list.innerHTML = "<li style='text-align:center; color:#94a3b8;'>ยังไม่มีคอมเมนต์ เริ่มพิมพ์คนแรกเลย!</li>";
+            alert("อัปโหลดเรียบร้อย!");
         }
-    });
+    }
+
+    // ดึงข้อมูลโพสต์และคอมเมนต์มาแสดง
+    function renderCars() {
+        db.ref('cars').on('value', snapshot => {
+            const list = document.getElementById('carList');
+            list.innerHTML = "";
+            const data = snapshot.val();
+            if (data) {
+                Object.keys(data).reverse().forEach(key => {
+                    const car = data[key];
+                    const card = document.createElement('div');
+                    card.className = 'car-card';
+                    card.innerHTML = `
+                        <div class="status-badge ${car.status}">${car.status === 'available' ? 'ยังมีอยู่' : 'ปิดการขาย'}</div>
+                        <img src="${car.img}" class="car-img">
+                        <div class="p-15">
+                            <h2 style="margin:0">${car.title}</h2>
+                            <p style="color:var(--accent); font-weight:bold">฿ ${car.price}</p>
+                            ${isAdmin ? `<button class="del-btn" onclick="deletePost('${key}')">❌ ลบโพสต์นี้</button>` : ''}
+                            <hr>
+                            <div id="comments-${key}"></div>
+                            <div style="margin-top:10px;">
+                                <input type="text" id="in-${key}" placeholder="คอมเมนต์..." style="width:70%; padding:5px;">
+                                <button onclick="sendComment('${key}')">ส่ง</button>
+                            </div>
+                        </div>
+                    `;
+                    list.appendChild(card);
+                    renderComments(key);
+                });
+            }
+        });
+    }
+
+    // ระบบคอมเมนต์
+    function sendComment(carId) {
+        const msg = document.getElementById(`in-${carId}`).value;
+        const name = localStorage.getItem('carnote_user') || "ลูกค้านิรนาม";
+        if(msg) {
+            db.ref(`comments/${carId}`).push({ name, msg });
+            document.getElementById(`in-${carId}`).value = "";
+        }
+    }
+
+    function renderComments(carId) {
+        db.ref(`comments/${carId}`).on('value', snapshot => {
+            const box = document.getElementById(`comments-${carId}`);
+            box.innerHTML = "";
+            const data = snapshot.val();
+            if(data) {
+                Object.keys(data).forEach(cKey => {
+                    const c = data[cKey];
+                    box.innerHTML += `
+                        <div class="comment-item">
+                            <b>${c.name}:</b> ${c.msg}
+                            ${isAdmin ? `<button class="del-btn" onclick="deleteComment('${carId}','${cKey}')">🗑️</button>` : ''}
+                        </div>
+                    `;
+                });
+            }
+        });
+    }
+
+    // ฟังก์ชันลบ (Admin Only)
+    function deletePost(id) { if(confirm("ลบโพสต์นี้ถาวร?")) db.ref(`cars/${id}`).remove(); }
+    function deleteComment(carId, cKey) { if(confirm("ลบเมนต์นี้?")) db.ref(`comments/${carId}/${cKey}`).remove(); }
+
+    renderCars(); // รันตอนเริ่ม
 </script>
 </body>
 </html>
