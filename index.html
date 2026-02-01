@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarNote Online - ตลาดรถมือสองคุณภาพ</title>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
+    
+    <style>
+        :root { --accent: #f97316; --dark: #0f172a; --bg: #f8fafc; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding-bottom: 50px; }
+        nav { background: var(--dark); color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; }
+        nav h1 { margin: 0; font-size: 1.4rem; color: var(--accent); }
+        .container { width: 92%; max-width: 600px; margin: 20px auto; }
+        .car-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .car-img { width: 100%; height: 220px; object-fit: cover; }
+        .car-info { padding: 15px; border-bottom: 1px solid #f1f5f9; }
+        .community-box { background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .input-group { display: flex; flex-direction: column; gap: 10px; }
+        input { padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; }
+        input:focus { border-color: var(--accent); }
+        .btn-send { background: var(--accent); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-send:active { transform: scale(0.98); }
+        .comment-list { list-style: none; padding: 0; margin-top: 20px; }
+        .comment-item { background: #f1f5f9; padding: 12px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid var(--accent); }
+        .user-tag { font-weight: bold; color: var(--accent); font-size: 0.85rem; display: block; }
+        .msg-text { margin-top: 4px; display: block; color: var(--dark); }
+    </style>
+</head>
+<body>
+
+<nav>
+    <h1>CarNote Online</h1>
+    <span style="font-size: 0.8rem; opacity: 0.8;">Note Community Car</span>
+</nav>
+
+<div class="container">
+    <div class="car-card">
+        <img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80" class="car-img" alt="Car">
+        <div class="car-info">
+            <h2 style="margin: 0; font-size: 1.2rem;">Ferrari 488 GTB</h2>
+            <p style="color: var(--accent); font-weight: bold; margin: 5px 0;">฿ 18,500,000</p>
+        </div>
+    </div>
+
+    <div class="community-box">
+        <h3 style="margin-top: 0;">💬 กระดานสนทนาออนไลน์</h3>
+        <div class="input-group">
+            <input type="text" id="usernameInput" placeholder="ตั้งชื่อเล่นของคุณ...">
+            <input type="text" id="messageInput" placeholder="พิมพ์คำถามหรือข้อความ...">
+            <button class="btn-send" onclick="sendToFirebase()">ส่งข้อความ</button>
+        </div>
+        <ul id="commentList" class="comment-list">
+            <li style="text-align: center; color: #94a3b8; font-size: 0.8rem;">กำลังเชื่อมต่อฐานข้อมูล...</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    // ข้อมูล Firebase ที่คุณภูผาส่งมา
+    const firebaseConfig = {
+        apiKey: "AIzaSyANA3-UyKf-MS2dcmbAuPGt-KtRd0KTmGw",
+        authDomain: "note-communitycar.firebaseapp.com",
+        databaseURL: "https://note-communitycar-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "note-communitycar",
+        storageBucket: "note-communitycar.firebasestorage.app",
+        messagingSenderId: "387457886547",
+        appId: "1:387457886547:web:d7e5f60fb7d2cdbf3ed9a6",
+        measurementId: "G-PRZCBY3V7K"
+    };
+
+    // เริ่มต้นระบบ
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // จำชื่อผู้ใช้ในเครื่อง
+    window.onload = function() {
+        const savedName = localStorage.getItem('carnote_user');
+        if (savedName) document.getElementById('usernameInput').value = savedName;
+    };
+
+    // ส่งข้อมูลไปออนไลน์
+    function sendToFirebase() {
+        const name = document.getElementById('usernameInput').value;
+        const msg = document.getElementById('messageInput').value;
+
+        if (name.trim() && msg.trim()) {
+            localStorage.setItem('carnote_user', name);
+            database.ref('comments').push().set({
+                username: name,
+                message: msg,
+                timestamp: Date.now()
+            });
+            document.getElementById('messageInput').value = ""; 
+        } else {
+            alert("ใส่ชื่อและข้อความก่อนนะครับ");
+        }
+    }
+
+    // ดึงข้อมูลมาโชว์แบบ Realtime
+    database.ref('comments').limitToLast(20).on('value', (snapshot) => {
+        const list = document.getElementById('commentList');
+        list.innerHTML = "";
+        const data = snapshot.val();
+        if (data) {
+            Object.values(data).reverse().forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'comment-item';
+                li.innerHTML = `<span class="user-tag">@${item.username}</span><span class="msg-text">${item.message}</span>`;
+                list.appendChild(li);
+            });
+        } else {
+            list.innerHTML = "<li style='text-align:center; color:#94a3b8;'>ยังไม่มีคอมเมนต์ เริ่มพิมพ์คนแรกเลย!</li>";
+        }
+    });
+</script>
+</body>
+</html>
