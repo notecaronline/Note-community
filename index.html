@@ -22,12 +22,10 @@
 
         body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--dark); -webkit-tap-highlight-color: transparent; }
         
-        /* Nav กะทัดรัด */
         nav { background: var(--accent); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; height: 50px; box-sizing: border-box; }
         nav h1 { margin: 0; color: white; font-size: 1.1rem; font-weight: 700; }
         .admin-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 5px 12px; border-radius: 8px; cursor: pointer; font-size: 0.75rem; }
 
-        /* หน้าปกเว็บ แบบ Compact */
         .hero-banner {
             width: 100%; height: 140px;
             background: linear-gradient(rgba(251, 140, 0, 0.85), rgba(239, 108, 0, 0.85)), url('Icon.png'); 
@@ -37,19 +35,18 @@
         .hero-banner h2 { font-size: 1.5rem; margin: 0; }
         .hero-banner p { font-size: 0.85rem; margin: 5px 0 0 0; opacity: 0.9; }
 
-        /* Pop-up แจ้งเตือน */
         .welcome-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 2000; padding: 20px; box-sizing: border-box; }
         .welcome-card { background: white; padding: 25px; border-radius: 20px; text-align: center; position: relative; max-width: 340px; width: 100%; border: 2px solid var(--accent); }
-        .welcome-img { width: 80px; height: 80px; object-fit: contain; margin-bottom: 10px; }
+        
+        /* ปรับรูป Icon.png ในแจ้งเตือนให้ขอบโค้งมน */
+        .welcome-img { width: 100px; height: 100px; object-fit: cover; margin-bottom: 15px; border-radius: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 
         .container { width: 92%; max-width: 500px; margin: 15px auto; }
         
-        /* Admin Panel */
         #adminPanel { background: white; padding: 15px; border-radius: 15px; border: 1px solid #ffe0b2; margin-bottom: 20px; display: none; }
         input, select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; margin-bottom: 10px; box-sizing: border-box; }
         .btn-post { width: 100%; background: var(--accent); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; }
 
-        /* Car Card */
         .car-card { background: white; border-radius: 15px; overflow: hidden; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; position: relative; }
         .status-tag { position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 6px; color: white; font-size: 0.65rem; font-weight: bold; z-index: 10; }
         .tag-available { background: var(--success); } .tag-sold { background: var(--danger); }
@@ -58,12 +55,10 @@
         .car-title { font-size: 1rem; font-weight: 600; margin: 0; color: var(--dark); }
         .price { font-size: 1.4rem; color: var(--accent-dark); font-weight: 700; margin: 4px 0 12px 0; }
         
-        /* ปุ่มติดต่อ */
         .contact-area { display: flex; gap: 8px; margin-top: 10px; }
         .btn-contact { flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: 600; color: white; font-size: 0.8rem; }
         .btn-facebook { background: #1877F2; } .btn-phone { background: var(--accent); }
         
-        /* รายละเอียดเบอร์โทร */
         .phone-display { font-size: 0.75rem; color: var(--gray); text-align: center; margin-top: 10px; font-weight: 600; }
 
         .admin-controls { display: flex; gap: 5px; margin-top: 10px; }
@@ -106,7 +101,6 @@
         <button id="uploadBtn" class="btn-post" onclick="startUpload()">ลงประกาศ</button>
         <button id="cancelEditBtn" onclick="cancelEdit()" style="display:none; width:100%; margin-top:8px; background:#f1f5f9; border:none; padding:8px; border-radius:8px; cursor:pointer; font-size:0.75rem;">ยกเลิก</button>
     </div>
-
     <div id="carList"></div>
 </div>
 
@@ -151,7 +145,6 @@
         const title = document.getElementById('carTitle').value, price = document.getElementById('carPrice').value;
         const file = document.getElementById('carFile').files[0], status = document.getElementById('carStatus').value;
         if(!title || !price) return alert("กรอกข้อมูลให้ครบ");
-        
         document.getElementById('uploadBtn').disabled = true;
         try {
             let finalImageUrl = existingImgUrl;
