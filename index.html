@@ -7,63 +7,58 @@
     
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
         :root { 
-            --accent: #fb8c00; 
-            --accent-dark: #ef6c00; 
-            --dark: #334155; 
-            --bg: #fdfcfb; 
-            --success: #16a34a; 
-            --danger: #dc2626; 
-            --gray: #64748b; 
+            --accent: #fb8c00; --accent-dark: #e67e22; --dark: #1e293b; 
+            --bg: #f8fafc; --success: #10b981; --danger: #f43f5e; 
+            --gray: #64748b; --white: #ffffff;
         }
 
         body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--dark); -webkit-tap-highlight-color: transparent; }
         
-        nav { background: var(--accent); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; height: 50px; box-sizing: border-box; }
-        nav h1 { margin: 0; color: white; font-size: 1.1rem; font-weight: 700; }
-        .admin-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 5px 12px; border-radius: 8px; cursor: pointer; font-size: 0.75rem; }
+        nav { background: var(--white); padding: 0 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; height: 60px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        nav h1 { margin: 0; color: var(--accent); font-size: 1.1rem; font-weight: 800; }
+        .admin-btn { background: var(--bg); color: var(--gray); border: 1px solid #e2e8f0; padding: 6px 14px; border-radius: 10px; cursor: pointer; font-size: 0.75rem; font-weight: 600; }
 
-        .hero-banner {
-            width: 100%; height: 140px;
-            background: linear-gradient(rgba(251, 140, 0, 0.85), rgba(239, 108, 0, 0.85)), url('Icon.png'); 
-            background-size: cover; background-position: center;
-            display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center;
-        }
-        .hero-banner h2 { font-size: 1.5rem; margin: 0; }
-        .hero-banner p { font-size: 0.85rem; margin: 5px 0 0 0; opacity: 0.9; }
+        .hero-banner { width: 100%; height: 160px; background: linear-gradient(135deg, var(--accent), var(--accent-dark)); display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; }
+        .hero-banner h2 { font-size: 1.7rem; margin: 0; font-weight: 800; }
 
-        .welcome-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 2000; padding: 20px; box-sizing: border-box; }
-        .welcome-card { background: white; padding: 25px; border-radius: 20px; text-align: center; position: relative; max-width: 340px; width: 100%; border: 2px solid var(--accent); }
+        .welcome-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 2000; padding: 20px; }
+        .welcome-card { background: var(--white); padding: 30px; border-radius: 28px; text-align: center; max-width: 340px; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .welcome-img { width: 100px; height: 100px; object-fit: cover; margin-bottom: 20px; border-radius: 22px; }
+
+        .container { width: 92%; max-width: 480px; margin: 20px auto; }
         
-        /* ปรับรูป Icon.png ในแจ้งเตือนให้ขอบโค้งมน */
-        .welcome-img { width: 100px; height: 100px; object-fit: cover; margin-bottom: 15px; border-radius: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        #adminPanel { background: var(--white); padding: 20px; border-radius: 20px; border: 1px solid #e2e8f0; margin-bottom: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); display: none; }
+        input, select { width: 100%; padding: 12px; border: 1.5px solid #f1f5f9; border-radius: 12px; font-size: 0.95rem; margin-bottom: 12px; box-sizing: border-box; background: #f8fafc; }
+        .btn-post { width: 100%; background: var(--accent); color: white; border: none; padding: 14px; border-radius: 14px; font-weight: 700; cursor: pointer; }
 
-        .container { width: 92%; max-width: 500px; margin: 15px auto; }
-        
-        #adminPanel { background: white; padding: 15px; border-radius: 15px; border: 1px solid #ffe0b2; margin-bottom: 20px; display: none; }
-        input, select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; margin-bottom: 10px; box-sizing: border-box; }
-        .btn-post { width: 100%; background: var(--accent); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; }
-
-        .car-card { background: white; border-radius: 15px; overflow: hidden; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; position: relative; }
-        .status-tag { position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 6px; color: white; font-size: 0.65rem; font-weight: bold; z-index: 10; }
+        .car-card { background: var(--white); border-radius: 24px; overflow: hidden; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; position: relative; }
+        .status-tag { position: absolute; top: 15px; left: 15px; padding: 6px 12px; border-radius: 10px; color: white; font-size: 0.65rem; font-weight: 800; z-index: 10; }
         .tag-available { background: var(--success); } .tag-sold { background: var(--danger); }
-        .car-img { width: 100%; height: 220px; object-fit: cover; background: #f8fafc; }
-        .details { padding: 15px; }
-        .car-title { font-size: 1rem; font-weight: 600; margin: 0; color: var(--dark); }
-        .price { font-size: 1.4rem; color: var(--accent-dark); font-weight: 700; margin: 4px 0 12px 0; }
+        .car-img { width: 100%; height: 240px; object-fit: cover; }
         
-        .contact-area { display: flex; gap: 8px; margin-top: 10px; }
-        .btn-contact { flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: 600; color: white; font-size: 0.8rem; }
-        .btn-facebook { background: #1877F2; } .btn-phone { background: var(--accent); }
-        
-        .phone-display { font-size: 0.75rem; color: var(--gray); text-align: center; margin-top: 10px; font-weight: 600; }
+        .details { padding: 20px; }
+        .price { font-size: 1.6rem; color: var(--accent); font-weight: 800; margin: 4px 0 16px 0; }
+        .contact-area { display: flex; gap: 10px; margin-bottom: 15px; }
+        .btn-contact { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 12px; border-radius: 14px; text-decoration: none; font-weight: 700; color: white; font-size: 0.9rem; }
+        .btn-facebook { background: #1877F2; } .btn-phone { background: var(--dark); }
 
-        .admin-controls { display: flex; gap: 5px; margin-top: 10px; }
-        .btn-edit { background: #f59e0b; color: white; border: none; flex: 1; padding: 6px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; }
-        .btn-del { background: #ef4444; color: white; border: none; flex: 1; padding: 6px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; }
+        /* ระบบความคิดเห็น */
+        .comment-section { background: #fcfdfe; border-top: 1px solid #f1f5f9; padding: 20px; }
+        .comment-title { font-size: 0.85rem; font-weight: 800; color: var(--gray); margin-bottom: 10px; }
+        .comment-item { background: white; padding: 10px 14px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f1f5f9; position: relative; }
+        .comment-user { font-weight: 800; font-size: 0.8rem; color: var(--accent-dark); margin-right: 5px; }
+        .comment-text { font-size: 0.85rem; color: var(--dark); }
+        .btn-del-cmt { position: absolute; right: 10px; top: 10px; color: var(--danger); background: none; border: none; font-size: 0.7rem; cursor: pointer; }
+        
+        .comment-input-grid { display: grid; grid-template-columns: 80px 1fr 45px; gap: 5px; margin-top: 15px; }
+        .comment-input-grid input { margin-bottom: 0; padding: 8px; font-size: 0.8rem; border-radius: 8px; }
+        .btn-send-cmt { background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; }
+
+        .admin-controls { display: flex; gap: 8px; margin-top: 15px; border-top: 1px solid #f1f5f9; padding-top: 15px; }
     </style>
 </head>
 <body>
@@ -71,9 +66,8 @@
 <div id="welcomePopup" class="welcome-overlay">
     <div class="welcome-card">
         <img src="Icon.png" class="welcome-img">
-        <h3 style="margin:0; color:var(--accent-dark); font-size: 1.1rem; line-height: 1.4;">ยินดีต้อนรับเข้าสู่เว็บ<br>CarNote Online</h3>
-        <p style="font-size: 0.8rem; color: var(--gray); margin: 10px 0;">พบกับรถคุณภาพดี ราคาเป็นกันเอง 🧡</p>
-        <button onclick="closeWelcome()" style="width:100%; background:var(--accent); color:white; border:none; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">สำรวจรถในสต็อก</button>
+        <h3 style="margin:0; font-weight: 800;">ยินดีต้อนรับเข้าสู่เว็บ<br><span style="color:var(--accent)">CarNote Online</span></h3>
+        <button onclick="closeWelcome()" class="btn-post" style="margin-top:20px;">เริ่มสำรวจรถยนต์</button>
     </div>
 </div>
 
@@ -84,23 +78,23 @@
 
 <div class="hero-banner">
     <h2>CarNote Online</h2>
-    <p>คัดรถสวย สภาพดี ราคาเป็นกันเอง 🧡</p>
+    <p>Premium Quality Second Hand Cars 🧡</p>
 </div>
 
 <div class="container">
     <div id="adminPanel">
-        <h4 style="margin:0 0 10px 0; color:var(--accent-dark);">✨ จัดการรถ</h4>
-        <input type="text" id="carTitle" placeholder="ชื่อรุ่น / ปี">
-        <input type="text" id="carPrice" placeholder="ราคา">
-        <label for="carFile" style="display:block; padding:10px; background:#fff7ed; border:1px dashed var(--accent); border-radius:8px; text-align:center; cursor:pointer; color:var(--accent-dark); font-size:0.8rem; margin-bottom:10px;">📁 เลือกรูปภาพ</label>
+        <h4>✨ จัดการข้อมูลรถ</h4>
+        <input type="text" id="carTitle" placeholder="ระบุชื่อรุ่น และปี">
+        <input type="text" id="carPrice" placeholder="ระบุราคา">
+        <label for="carFile" style="display:block; padding:12px; background:var(--bg); border:2px dashed #cbd5e1; border-radius:12px; text-align:center; cursor:pointer; color:var(--gray); font-size:0.8rem; margin-bottom:12px;">📁 เลือกรูปภาพรถ</label>
         <input type="file" id="carFile" accept="image/*" style="display:none" onchange="updateLabel()">
         <select id="carStatus">
             <option value="available">🟢 ยังมีอยู่</option>
             <option value="sold">🔴 ขายแล้ว</option>
         </select>
-        <button id="uploadBtn" class="btn-post" onclick="startUpload()">ลงประกาศ</button>
-        <button id="cancelEditBtn" onclick="cancelEdit()" style="display:none; width:100%; margin-top:8px; background:#f1f5f9; border:none; padding:8px; border-radius:8px; cursor:pointer; font-size:0.75rem;">ยกเลิก</button>
+        <button id="uploadBtn" class="btn-post" onclick="startUpload()">ลงประกาศทันที</button>
     </div>
+
     <div id="carList"></div>
 </div>
 
@@ -118,10 +112,10 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     const IMGBB_API_KEY = '5a3de96d3f6deddc05d65dc1928e466b';
-
     let isAdmin = false, editMode = false, editKey = null, existingImgUrl = null;
 
     function closeWelcome() { document.getElementById('welcomePopup').style.display = 'none'; }
+    function updateLabel() { const file = document.getElementById('carFile').files[0]; if(file) alert("📸 เลือกรูป: " + file.name); }
 
     function handleAdmin() {
         if (!isAdmin) {
@@ -139,12 +133,10 @@
         }
     }
 
-    function updateLabel() { const file = document.getElementById('carFile').files[0]; if(file) alert("เลือก: " + file.name); }
-
     async function startUpload() {
         const title = document.getElementById('carTitle').value, price = document.getElementById('carPrice').value;
         const file = document.getElementById('carFile').files[0], status = document.getElementById('carStatus').value;
-        if(!title || !price) return alert("กรอกข้อมูลให้ครบ");
+        if(!title || !price) return alert("ข้อมูลไม่ครบ");
         document.getElementById('uploadBtn').disabled = true;
         try {
             let finalImageUrl = existingImgUrl;
@@ -156,7 +148,7 @@
             if (editMode) { await db.ref(`cars/${editKey}`).update({ title, price, img: finalImageUrl, status }); }
             else { await db.ref('cars').push({ title, price, img: finalImageUrl, status, time: Date.now() }); }
             location.reload();
-        } catch (err) { alert("ล้มเหลว"); document.getElementById('uploadBtn').disabled = false; }
+        } catch (err) { alert("ล้มเหลว"); }
     }
 
     function renderCars() {
@@ -168,38 +160,72 @@
                     const car = data[key];
                     list.innerHTML += `
                         <div class="car-card">
-                            <div class="status-tag ${car.status === 'available' ? 'tag-available' : 'tag-sold'}">${car.status === 'available' ? 'ยังมีอยู่' : 'ขายแล้ว'}</div>
+                            <div class="status-tag ${car.status === 'available' ? 'tag-available' : 'tag-sold'}">${car.status === 'available' ? '🔥 พร้อมขาย' : '❌ ขายแล้ว'}</div>
                             <img src="${car.img}" class="car-img">
                             <div class="details">
-                                <h2 class="car-title">🚗 ${car.title}</h2>
+                                <h2 style="margin:0; font-size:1.1rem;">${car.title}</h2>
                                 <div class="price">฿${car.price}</div>
                                 <div class="contact-area">
-                                    <a href="https://m.me/note.notety.5" target="_blank" class="btn-contact btn-facebook">แชท</a>
-                                    <a href="tel:0835255642" class="btn-contact btn-phone">โทร</a>
+                                    <a href="https://m.me/note.notety.5" target="_blank" class="btn-contact btn-facebook">💬 แชท</a>
+                                    <a href="tel:0835255642" class="btn-contact btn-phone">📞 โทร</a>
                                 </div>
-                                <div class="phone-display">📞 เบอร์ติดต่อ: 083-525-5642</div>
                                 ${isAdmin ? `<div class="admin-controls">
-                                    <button class="btn-edit" onclick="editPost('${key}', '${car.title}', '${car.price}', '${car.status}', '${car.img}')">แก้</button>
-                                    <button class="btn-del" onclick="deletePost('${key}')">ลบ</button>
+                                    <button onclick="editPost('${key}', '${car.title}', '${car.price}', '${car.status}', '${car.img}')" style="flex:1; padding:8px; border-radius:8px; border:none; background:#fef3c7; color:#92400e; font-weight:700;">แก้ไข</button>
+                                    <button onclick="deletePost('${key}')" style="flex:1; padding:8px; border-radius:8px; border:none; background:#fee2e2; color:#991b1b; font-weight:700;">ลบ</button>
                                 </div>` : ''}
                             </div>
+                            <div class="comment-section">
+                                <div class="comment-title">💬 ความคิดเห็น</div>
+                                <div id="comments-${key}"></div>
+                                <div class="comment-input-grid">
+                                    <input type="text" id="name-${key}" placeholder="ชื่อของคุณ">
+                                    <input type="text" id="text-${key}" placeholder="ถามผู้ขาย...">
+                                    <button class="btn-send-cmt" onclick="addComment('${key}')">➡️</button>
+                                </div>
+                            </div>
+                        </div>`;
+                    renderComments(key);
+                });
+            }
+        });
+    }
+
+    function addComment(carId) {
+        const name = document.getElementById(`name-${carId}`).value || "ลูกค้า";
+        const text = document.getElementById(`text-${carId}`).value;
+        if(!text) return;
+        db.ref(`cars/${carId}/comments`).push({ name, text, time: Date.now() });
+        document.getElementById(`text-${carId}`).value = "";
+    }
+
+    function renderComments(carId) {
+        db.ref(`cars/${carId}/comments`).on('value', snap => {
+            const div = document.getElementById(`comments-${carId}`); div.innerHTML = "";
+            const cData = snap.val();
+            if(cData) {
+                Object.keys(cData).forEach(cKey => {
+                    const c = cData[cKey];
+                    div.innerHTML += `
+                        <div class="comment-item">
+                            <span class="comment-user">${c.name}:</span>
+                            <span class="comment-text">${c.text}</span>
+                            ${isAdmin ? `<button class="btn-del-cmt" onclick="deleteComment('${carId}', '${cKey}')">❌</button>` : ''}
                         </div>`;
                 });
             }
         });
     }
 
+    function deleteComment(carId, cKey) { if(confirm("ลบคอมเมนต์นี้?")) db.ref(`cars/${carId}/comments/${cKey}`).remove(); }
+    function deletePost(id) { if(confirm("ลบประกาศ?")) db.ref(`cars/${id}`).remove(); }
     function editPost(key, title, price, status, img) {
         editMode = true; editKey = key; existingImgUrl = img;
         document.getElementById('adminPanel').style.display = 'block';
         document.getElementById('carTitle').value = title;
         document.getElementById('carPrice').value = price;
         document.getElementById('carStatus').value = status;
-        document.getElementById('cancelEditBtn').style.display = 'block';
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
-
-    function deletePost(id) { if(confirm("ลบ?")) db.ref(`cars/${id}`).remove(); }
     renderCars();
 </script>
 </body>
