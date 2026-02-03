@@ -53,8 +53,8 @@
     .comment-location { font-size: 0.65rem; background: rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 8px; color: #94a3b8; margin-left: 8px; }
     .comment-msg { font-size: 0.95rem; color: #cbd5e1; margin: 10px 0; }
     .comment-time { font-size: 0.7rem; color: #475569; }
-    .comment-input-box { position: sticky; bottom: 20px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); padding: 12px 20px; border-radius: 20px; border: 1px solid var(--primary); display: flex; gap: 10px; margin-top: 30px; }
-    #commentInput { flex: 1; background: transparent; border: none; color: white; outline: none; }
+    .comment-input-box { position: sticky; bottom: 20px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); padding: 12px 20px; border-radius: 20px; border: 1px solid var(--primary); display: flex; gap: 10px; margin-top: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    #commentInput { flex: 1; background: transparent; border: none; color: white; outline: none; font-size: 1rem; }
 
     /* Modals */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 5000; backdrop-filter: blur(8px); }
@@ -87,8 +87,8 @@
     <div class="pop-card animate__animated animate__zoomIn">
       <img src="Icon.png" style="width:80px; height:80px; border-radius:20px; margin-bottom:15px; border:2px solid var(--primary);">
       <h2 id="welTitle">ยินดีต้อนรับ</h2>
-      <p id="welSub">คัดรถสวย สภาพดี 🧡</p>
-      <button onclick="enterSite()" class="btn-texture btn-orange" style="width:100%;" id="startBtn">เข้าสู่ระบบ</button>
+      <p id="welSub">คัดรถสวย สภาพดี ราคาเป็นกันเอง 🧡</p>
+      <button onclick="enterSite()" class="btn-texture btn-orange" style="width:100%;" id="startBtn">เข้าชมรถในสต็อก</button>
     </div>
   </div>
 
@@ -140,6 +140,16 @@
     </div>
   </div>
 
+  <div id="nameModal" class="modal-overlay">
+    <div class="pop-card animate__animated animate__zoomIn">
+      <div style="font-size: 3.5rem; color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-circle-user"></i></div>
+      <h3 id="txtAskName">ยินดีที่ได้รู้จัก</h3>
+      <p id="txtAskNameSub" style="color:gray; font-size:0.85rem; margin-bottom:20px;">กรุณาระบุชื่อของคุณเพื่อเริ่มพูดคุยกับเรา</p>
+      <input type="text" id="userNameInput" placeholder="ชื่อของคุณ..." style="text-align:center; font-size: 1.1rem; border: 1px solid var(--primary);">
+      <button onclick="saveCommentWithName()" class="btn-texture btn-orange" style="width:100%;">ตกลง</button>
+    </div>
+  </div>
+
   <div id="confirmModal" class="modal-overlay">
     <div class="pop-card animate__animated animate__zoomIn" style="border: 1px solid #ef4444;">
         <div style="font-size: 3rem; color: #ef4444; margin-bottom: 15px;"><i class="fa-solid fa-circle-exclamation"></i></div>
@@ -155,22 +165,27 @@
   <script>
     const translations = {
       th: {
-        welTitle: "ยินดีต้อนรับเข้าสู่ NoteCar Online", welSub: "คัดรถสวย สภาพดี ราคาเป็นกันเอง 🧡", startBtn: "เข้าชมร้านค้า",
+        welTitle: "ยินดีต้อนรับเข้าสู่ NoteCar Online", welSub: "คัดรถสวย สภาพดี ราคาเป็นกันเอง 🧡", startBtn: "เข้าชมรถในสต็อก",
         btnChat: "แชท", btnCall: "โทร", availTag: "ยังมีอยู่", soldTag: "ขายแล้ว",
         txtAdminTitle: "⚙️ จัดการสต็อก", txtRestore: "เริ่มประกาศใหม่", txtUpload: "อัปโหลดรูปภาพ",
         optAvail: "🟢 พร้อมขาย", optSold: "🔴 ขายแล้ว", uploadBtn: "บันทึกข้อมูล",
-        txtComTitle: "💬 ความคิดเห็น", commentInput: "พิมพ์ข้อความ...", confirmTitle: "ยืนยันการลบ?", confirmSub: "ข้อมูลจะถูกลบถาวร", btnConfirmAction: "ลบเลย", btnDel: "ลบ"
+        txtComTitle: "💬 ความคิดเห็นล่าสุด", commentInput: "พิมพ์ข้อความ...", 
+        confirmTitle: "ยืนยันการลบ?", confirmSub: "ข้อมูลจะถูกลบถาวร ไม่สามารถกู้คืนได้", btnConfirmAction: "ลบเลย", btnDel: "ลบ",
+        txtAskName: "ยินดีที่ได้รู้จัก", txtAskNameSub: "กรุณาระบุชื่อของคุณเพื่อเริ่มพูดคุยกับเรา"
       },
       en: {
-        welTitle: "Welcome to NoteCar Online", welSub: "Premium cars at friendly prices 🧡", startBtn: "Enter Shop",
+        welTitle: "Welcome to NoteCar Online", welSub: "Premium cars at friendly prices 🧡", startBtn: "View Inventory",
         btnChat: "CHAT", btnCall: "CALL", availTag: "AVAILABLE", soldTag: "SOLD OUT",
         txtAdminTitle: "⚙️ Stock Management", txtRestore: "Restart Post", txtUpload: "Upload Image",
         optAvail: "🟢 Available", optSold: "🔴 Sold Out", uploadBtn: "Save Post",
-        txtComTitle: "💬 Comments", commentInput: "Write a comment...", confirmTitle: "Are you sure?", confirmSub: "Cannot be undone.", btnConfirmAction: "Delete Now", btnDel: "DEL"
+        txtComTitle: "💬 Latest Comments", commentInput: "Write a comment...", 
+        confirmTitle: "Are you sure?", confirmSub: "This action cannot be undone.", btnConfirmAction: "Delete Now", btnDel: "DEL",
+        txtAskName: "Nice to meet you", txtAskNameSub: "Please enter your name to continue"
       }
     };
 
-    let currentLang = 'th', isAdmin = false, editMode = false, editKey = null, deletePath = null;
+    let currentLang = 'th', isAdmin = false, editMode = false, editKey = null, deletePath = null, tempComment = "";
+    
     const firebaseConfig = { apiKey: "AIzaSyANA3-UyKf-MS2dcmbAuPGt-KtRd0KTmGw", databaseURL: "https://note-communitycar-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "note-communitycar" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
@@ -193,7 +208,7 @@
 
     function enterSite() { document.getElementById('welcomeOverlay').style.display = 'none'; }
     function openLogin() { document.getElementById('loginModal').style.display = 'flex'; }
-    function closeLogin() { document.getElementById('loginModal').style.display = 'none'; }
+    function closeLogin() { document.getElementById('loginModal').style.display = 'none'; document.getElementById('adminPass').value = ''; }
 
     function checkLogin() {
       if(document.getElementById('adminPass').value === "Note#2026!Car@Phupha99") {
@@ -202,6 +217,7 @@
         document.getElementById('adminAuthBtn').innerHTML = `<button onclick="logoutAdmin()" class="admin-icon-btn logout-btn"><i class="fa-solid fa-right-from-bracket"></i></button>`;
         openAdminPanel();
         loadComments(); renderCars();
+        showToast("Admin Mode Active");
       } else alert("รหัสผ่านไม่ถูกต้อง");
     }
 
@@ -217,7 +233,6 @@
     function openAdminPanel() { document.getElementById('adminPanel').style.display = 'block'; document.getElementById('restoreBtn').style.display = 'none'; }
     function cancelAdmin() { document.getElementById('adminPanel').style.display = 'none'; if(isAdmin) document.getElementById('restoreBtn').style.display = 'flex'; }
 
-    // ฟังก์ชันดูจังหวัดจาก IP (ip-api.com)
     async function getProvince() {
         try {
             const res = await fetch('http://ip-api.com/json/?fields=status,regionName');
@@ -228,16 +243,35 @@
 
     async function handleComment() {
       const input = document.getElementById('commentInput');
-      if(!input.value) return;
+      tempComment = input.value;
+      if(!tempComment) return;
+
       let name = localStorage.getItem('noteCarUserName');
       if(!name) {
-          name = prompt("กรุณาใส่ชื่อของคุณ / Please enter your name:");
-          if(!name) return;
-          localStorage.setItem('noteCarUserName', name);
+          const t = translations[currentLang];
+          document.getElementById('txtAskName').innerText = t.txtAskName;
+          document.getElementById('txtAskNameSub').innerText = t.txtAskNameSub;
+          document.getElementById('nameModal').style.display = 'flex';
+          return;
       }
-      const province = await getProvince();
-      db.ref('comments').push({ name, text: input.value, location: province, timestamp: Date.now() });
+      executePushComment(name, tempComment);
       input.value = "";
+    }
+
+    async function saveCommentWithName() {
+        const nInput = document.getElementById('userNameInput');
+        const name = nInput.value.trim();
+        if(name) {
+            localStorage.setItem('noteCarUserName', name);
+            document.getElementById('nameModal').style.display = 'none';
+            executePushComment(name, tempComment);
+            document.getElementById('commentInput').value = "";
+        }
+    }
+
+    async function executePushComment(name, text) {
+        const province = await getProvince();
+        db.ref('comments').push({ name, text, location: province, timestamp: Date.now() });
     }
 
     function renderCars() {
@@ -251,13 +285,13 @@
               <div class="status-tag" style="background:${car.status==='available'?'#16a34a':'#dc2626'}">${car.status==='available' ? t.availTag : t.soldTag}</div>
               <img src="${car.img}" class="car-img">
               <div style="padding:20px;">
-                <h3 style="color:white;">${car.title}</h3>
+                <h3 style="color:white; font-family:'Kanit';">${car.title}</h3>
                 <div style="font-size:1.8rem; font-weight:800; color:var(--primary); margin:10px 0;">฿${car.price}</div>
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
                   <a href="https://m.me/note.notety.5" target="_blank" class="btn-texture btn-blue" style="text-decoration:none;">${t.btnChat}</a>
                   <a href="tel:0835255642" class="btn-texture btn-dark" style="text-decoration:none;">${t.btnCall}</a>
                 </div>
-                ${isAdmin ? `<div style="display:flex; gap:8px; margin-top:12px;"><button onclick="editPost('${key}','${car.title}','${car.price}','${car.status}','${car.img}')" class="btn-texture btn-dark" style="flex:1;">EDIT</button><button onclick="triggerDelete('cars/${key}')" class="btn-texture btn-red" style="flex:1;">DEL</button></div>` : ''}
+                ${isAdmin ? `<div style="display:flex; gap:8px; margin-top:12px;"><button onclick="editPost('${key}','${car.title}','${car.price}','${car.status}','${car.img}')" class="btn-texture btn-dark" style="flex:1; font-size:0.75rem;">EDIT</button><button onclick="triggerDelete('cars/${key}')" class="btn-texture btn-red" style="flex:1; font-size:0.75rem;">DEL</button></div>` : ''}
               </div>
             </div>`;
         });
@@ -274,19 +308,25 @@
             <div class="comment-card animate__animated animate__fadeIn">
               <div class="comment-user">@ ${c.name} <span class="comment-location"><i class="fa-solid fa-location-dot"></i> ${c.location}</span></div>
               <div class="comment-msg">${c.text}</div>
-              <div class="comment-time">${new Date(c.timestamp).toLocaleString()}</div>
-              ${isAdmin ? `<button onclick="triggerDelete('comments/${key}')" style="position:absolute; top:15px; right:15px; background:#ef4444; color:white; border:none; border-radius:8px; padding:5px 12px; cursor:pointer;"><i class="fa-solid fa-trash"></i> ${t.btnDel}</button>` : ''}
+              <div class="comment-time">${new Date(c.timestamp).toLocaleString(currentLang === 'th' ? 'th-TH' : 'en-US')}</div>
+              ${isAdmin ? `<button onclick="triggerDelete('comments/${key}')" style="position:absolute; top:15px; right:15px; background:#ef4444; color:white; border:none; border-radius:8px; padding:5px 12px; cursor:pointer; font-size:0.75rem;"><i class="fa-solid fa-trash"></i> ${t.btnDel}</button>` : ''}
             </div>`;
         });
       });
     }
 
-    function triggerDelete(path) { deletePath = path; document.getElementById('confirmModal').style.display = 'flex'; }
+    function triggerDelete(path) { 
+        deletePath = path; 
+        const t = translations[currentLang];
+        document.getElementById('confirmTitle').innerText = t.confirmTitle;
+        document.getElementById('confirmSub').innerText = t.confirmSub;
+        document.getElementById('confirmModal').style.display = 'flex'; 
+    }
     function closeConfirm() { document.getElementById('confirmModal').style.display = 'none'; }
     document.getElementById('btnConfirmAction').onclick = function() {
-        if(deletePath) db.ref(deletePath).remove().then(() => { closeConfirm(); showToast("Deleted"); });
+        if(deletePath) db.ref(deletePath).remove().then(() => { closeConfirm(); showToast(currentLang === 'th' ? "ลบสำเร็จ" : "Deleted"); });
     }
-    function showToast(m) { const t = document.getElementById('successToast'); t.innerText = m; t.style.display='block'; setTimeout(()=>t.style.display='none', 2000); }
+    function showToast(m) { const t = document.getElementById('successToast'); t.innerText = m; t.style.display='block'; t.classList.add('animate__fadeInUp'); setTimeout(()=>t.style.display='none', 2500); }
 
     setLang('th');
   </script>
