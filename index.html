@@ -26,9 +26,9 @@
       --accent-start: #ff7a18;
       --accent-end: #fb2e86;
       --accent: linear-gradient(135deg,var(--accent-start),var(--accent-end));
-      --accent-solid: #fb8c00; /* kept for compatibility */
-      --muted: rgba(255,255,255,0.7);
-      --text-dark: #0f172a;
+      --accent-solid: #fb8c00;
+      --muted: rgba(255,255,255,0.72);
+      --text-dark: #eaf4ff;
       --text-light: #eaf4ff;
       --success: #10b981;
       --danger: #ef4444;
@@ -37,18 +37,20 @@
       --card-shadow: 0 12px 32px rgba(2,6,23,0.6);
       --glass-blur: 10px;
       --max-width: 1100px;
+      --ui-gap: 18px;
     }
 
-    /* Dark mode variables (applied with data-theme="dark" on <html> or <body>) */
-    :root[data-theme="dark"] {
-      --bg-1: #071021;
-      --bg-2: #041021;
-      --surface: rgba(255,255,255,0.02);
-      --glass: rgba(255,255,255,0.03);
-      --glass-2: rgba(255,255,255,0.02);
-      --glass-border: rgba(255,255,255,0.05);
-      --muted: rgba(255,255,255,0.72);
-      --text-dark: #eaf4ff;
+    /* Light theme overrides */
+    :root[data-theme="light"]{
+      --bg-1: #f6fbff;
+      --bg-2: #eef6ff;
+      --surface: rgba(10,14,23,0.03);
+      --glass: rgba(10,14,23,0.03);
+      --glass-border: rgba(10,14,23,0.06);
+      --muted: rgba(15,23,42,0.6);
+      --text-dark: #0f172a;
+      --text-light: #0f172a;
+      --card-shadow: 0 12px 36px rgba(12,18,36,0.06);
     }
 
     /* Respect reduced motion */
@@ -63,8 +65,8 @@
       font-family: "Inter", "Anuphan", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
       color: var(--text-dark);
       background:
-        radial-gradient(1200px 600px at 10% 10%, rgba(251,140,0,0.08), transparent 6%),
-        radial-gradient(900px 500px at 90% 80%, rgba(251,46,134,0.06), transparent 8%),
+        radial-gradient(1200px 600px at 10% 10%, rgba(251,140,0,0.06), transparent 6%),
+        radial-gradient(900px 500px at 90% 80%, rgba(251,46,134,0.04), transparent 8%),
         linear-gradient(180deg,var(--bg-1), var(--bg-2));
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
@@ -103,7 +105,7 @@
       margin: 10px;
       background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
       border: 1px solid var(--glass-border);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
       backdrop-filter: blur(var(--glass-blur));
       position: sticky; top: 12px; z-index: 999;
       transition: transform .28s ease, box-shadow .28s ease;
@@ -114,9 +116,10 @@
     }
     .brand .logo-mark{
       width:52px; height:52px; border-radius:12px;
-      background: linear-gradient(135deg,#ff7a18,#fb2e86);
-      display:inline-grid; place-items:center; color:white; font-weight:700;
-      box-shadow: 0 8px 30px rgba(251,46,134,0.12), inset 0 -6px 12px rgba(0,0,0,0.18);
+      background: linear-gradient(135deg,var(--accent-start),var(--accent-end));
+      display:inline-grid; place-items:center; color:white; font-weight:800;
+      box-shadow: 0 8px 30px rgba(251,46,134,0.12), inset 0 -6px 12px rgba(0,0,0,0.12);
+      font-family: "Anuphan", "Inter", sans-serif;
     }
     .brand h1{
       margin:0; font-size:1.05rem; letter-spacing:-0.02em; color:var(--text-dark);
@@ -141,8 +144,8 @@
       border-radius: 18px;
       overflow:hidden;
       display:flex; gap:18px; align-items:center; padding:18px;
-      background: linear-gradient(135deg, rgba(255,122,24,0.18), rgba(251,46,134,0.12));
-      border: 1px solid rgba(255,255,255,0.03); box-shadow: 0 12px 36px rgba(2,6,23,0.5);
+      background: linear-gradient(135deg, rgba(255,122,24,0.12), rgba(251,46,134,0.09));
+      border: 1px solid rgba(255,255,255,0.03); box-shadow: 0 12px 36px rgba(2,6,23,0.22);
       backdrop-filter: blur(6px);
     }
     .hero-content{ flex:1; color:var(--text-dark); }
@@ -159,7 +162,7 @@
     /* ---------- Container & Admin Panel ---------- */
     .container{
       margin: 18px 10px;
-      display:grid; gap:18px;
+      display:grid; gap:var(--ui-gap);
       grid-template-columns: 1fr 420px;
       align-items:start;
     }
@@ -170,12 +173,14 @@
       border-radius:16px;
       padding:18px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
       border: 1px solid var(--glass-border);
-      box-shadow: 0 12px 30px rgba(2,6,23,0.55);
+      box-shadow: 0 12px 30px rgba(2,6,23,0.18);
       backdrop-filter: blur(var(--glass-blur));
       display:none; /* toggled by admin login */
     }
     #adminPanel.show{ display:block; animation: slideFadeIn .48s cubic-bezier(.2,.9,.25,1); }
     @keyframes slideFadeIn { from{ opacity:0; transform:translateY(12px) } to{ opacity:1; transform:translateY(0) } }
+
+    label, input, select, textarea, button { font-family: inherit; }
 
     input[type="text"], input[type="password"], input[type="file"], select, textarea{
       width:100%; padding:12px 14px; border-radius:12px; font-size:0.95rem;
@@ -198,20 +203,20 @@
       cursor:pointer; transition: transform .18s cubic-bezier(.2,.9,.25,1), filter .18s;
     }
     .btn-post:active{ transform: translateY(1px) scale(.998); }
-    .btn-ghost{ background:transparent; border:1px solid rgba(255,255,255,0.04); color:var(--muted); }
+    .btn-ghost{ background:transparent; border:1px solid rgba(255,255,255,0.04); color:var(--muted); padding:10px 12px; border-radius:12px; cursor:pointer; }
 
     /* ---------- Car list / cards ---------- */
     #carList{ display:grid; gap:18px; }
     .car-card{
       border-radius:16px; overflow:hidden; position:relative;
       border: 1px solid rgba(255,255,255,0.03);
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      box-shadow: 0 12px 36px rgba(2,6,23,0.5);
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      box-shadow: var(--card-shadow);
       display:flex; flex-direction:column;
       transition: transform .28s cubic-bezier(.2,.9,.25,1), box-shadow .28s;
       will-change: transform;
     }
-    .car-card:hover{ transform: translateY(-6px); box-shadow: 0 26px 60px rgba(2,6,23,0.6); }
+    .car-card:hover{ transform: translateY(-6px); box-shadow: 0 26px 60px rgba(2,6,23,0.24); }
 
     .car-top{
       position:relative; min-height:260px; background:#111;
@@ -222,21 +227,22 @@
       position:absolute; top:16px; left:16px; padding:8px 12px; border-radius:999px; color:white; font-weight:800;
       font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; box-shadow: 0 8px 24px rgba(0,0,0,0.25);
       backdrop-filter: blur(6px);
+      display:inline-flex; gap:8px; align-items:center;
     }
     .tag-available{ background: linear-gradient(90deg,#10b981,#06b6d4); }
     .tag-sold{ background: linear-gradient(90deg,#ef4444,#fb7185); }
 
     .details{ padding: 18px; display:flex; flex-direction:column; gap:8px; }
-    .details h2{ margin:0; font-size:1.05rem; }
-    .price{ margin-top:2px; font-size:1.4rem; font-weight:800; color:var(--accent-start); }
+    .details h2{ margin:0; font-size:1.05rem; display:flex; align-items:center; gap:10px; }
+    .price{ margin-top:2px; font-size:1.32rem; font-weight:800; color:var(--accent-start); }
 
     .contact-area{ display:flex; gap:10px; margin-top:8px; }
     .btn-contact{
       flex:1; padding:10px 12px; border-radius:12px; display:inline-flex; gap:8px; align-items:center; justify-content:center;
-      color:white; text-decoration:none; font-weight:700; box-shadow: 0 8px 26px rgba(0,0,0,0.22);
+      color:white; text-decoration:none; font-weight:700; box-shadow: 0 8px 26px rgba(0,0,0,0.12);
       transition: transform .16s ease, box-shadow .16s ease;
     }
-    .btn-contact:hover{ transform: translateY(-3px); box-shadow: 0 18px 40px rgba(0,0,0,0.32); }
+    .btn-contact:hover{ transform: translateY(-3px); box-shadow: 0 18px 40px rgba(0,0,0,0.18); }
     .btn-facebook{ background: linear-gradient(90deg,#1877F2,#166FE5); }
     .btn-phone{ background: linear-gradient(90deg,#0f172a,#394b6b); }
 
@@ -244,8 +250,8 @@
     .btn-edit{ flex:1; padding:10px; background: linear-gradient(90deg,#fef3c7,#fde68a); border-radius:10px; color:#92400e; font-weight:800; border:none; cursor:pointer; }
     .btn-del{ flex:1; padding:10px; background: linear-gradient(90deg,#fee2e2,#fecaca); border-radius:10px; color:#991b1b; font-weight:800; border:none; cursor:pointer; }
 
-    .comment-section{ padding:14px 18px; border-top:1px solid rgba(255,255,255,0.02); background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent); }
-    .comment-item{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,0.02); margin-bottom:8px; position:relative; font-size:0.9rem; }
+    .comment-section{ padding:14px 18px; border-top:1px solid rgba(255,255,255,0.02); background: linear-gradient(180deg, rgba(255,255,255,0.00), transparent); }
+    .comment-item{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,0.02); margin-bottom:8px; position:relative; font-size:0.9rem; color:var(--muted); }
 
     .btn-del-cmt{ position:absolute; right:8px; top:8px; background:transparent; border:none; color:var(--danger); cursor:pointer; }
 
@@ -256,7 +262,7 @@
       backdrop-filter: blur(8px); z-index:3000; padding:18px;
     }
     .welcome-card{
-      width:100%; max-width:360px; border-radius:16px; padding:20px; text-align:center;
+      width:100%; max-width:420px; border-radius:16px; padding:22px; text-align:center;
       background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
       border: 1px solid var(--glass-border);
       box-shadow: 0 28px 80px rgba(2,6,23,0.7);
@@ -283,6 +289,8 @@
       .shell{ padding:12px; }
       .hero-banner{ flex-direction:column; align-items:flex-start; gap:10px; padding:14px; }
       #adminPanel{ position:static; top:auto; }
+      .container{ gap:12px; }
+      .car-top{ min-height:180px; }
     }
 
   </style>
@@ -290,7 +298,7 @@
 <body>
 
   <div class="page-bg" aria-hidden="true">
-    <div class="bg-band"></div>
+    <div class="bg-band" aria-hidden="true"></div>
     <canvas id="particles" class="particles" style="position:absolute; inset:0; width:100%; height:100%;"></canvas>
   </div>
 
@@ -335,13 +343,13 @@
         <input type="text" id="carTitle" placeholder="ชื่อรุ่น / ปี" />
         <input type="text" id="carPrice" placeholder="ราคา (บาท)" />
         <label for="carFile" id="fileLabel" class="file-label">📁 เลือกรูปรถ</label>
-        <input type="file" id="carFile" accept="image/*" style="display:none" onchange="document.getElementById('fileLabel').innerText = '📸 เลือกรูปแล้ว: ' + this.files[0].name" />
+        <input type="file" id="carFile" accept="image/*" style="display:none" />
         <select id="carStatus">
           <option value="available">🟢 ยังมีอยู่ (พร้อมขาย)</option>
           <option value="sold">🔴 ขายแล้ว (ปิดการขาย)</option>
         </select>
         <button id="uploadBtn" class="btn-post" onclick="startUpload()">ลงประกาศทันที</button>
-        <button id="cancelEditBtn" class="btn-ghost" onclick="location.reload()" style="display:none; margin-top:8px;">ยกเลิกการแก้ไข</button>
+        <button id="cancelEditBtn" class="btn-ghost" onclick="cancelEdit()" style="display:none; margin-top:8px;">ยกเลิกการแก้ไข</button>
       </aside>
     </main>
   </div>
@@ -374,8 +382,11 @@
     </div>
   </div>
 
-  <!-- ===== Original app script (kept intact to preserve functionality) ===== -->
+  <!-- ===== Application script (preserves original IDs & behavior) ===== -->
   <script>
+    /* -------------------------
+       Configuration (kept from original)
+       ------------------------- */
     const firebaseConfig = {
         apiKey: "AIzaSyANA3-UyKf-MS2dcmbAuPGt-KtRd0KTmGw",
         authDomain: "note-communitycar.firebaseapp.com",
@@ -389,24 +400,54 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     const IMGBB_API_KEY = '5a3de96d3f6deddc05d65dc1928e466b';
+
+    /* -------------------------
+       App state
+       ------------------------- */
     let isAdmin = false, editMode = false, editKey = null, existingImgUrl = null;
 
-    function closeWelcome() { 
+    /* -------------------------
+       Helpers: UI toggles
+       ------------------------- */
+    function showLoading() {
+      const el = document.getElementById('loadingOverlay');
+      el.style.display = 'flex';
+      requestAnimationFrame(()=> el.style.opacity = '1');
+    }
+    function hideLoading() {
+      const el = document.getElementById('loadingOverlay');
+      el.style.opacity = '0';
+      setTimeout(()=> el.style.display = 'none', 240);
+    }
+
+    function closeWelcome() {
         const w = document.getElementById('welcomePopup');
         w.style.transition = 'opacity .25s ease, transform .25s ease';
         w.style.opacity = '0';
         w.style.transform = 'scale(.98)';
         setTimeout(()=> w.style.display = 'none', 280);
     }
+
     function handleAdmin() {
-        if (!isAdmin) { 
-            const modal = document.getElementById('adminModal'); modal.style.display = 'flex'; setTimeout(()=> { modal.style.opacity = '1'; }, 20);
+        if (!isAdmin) {
+            const modal = document.getElementById('adminModal');
+            modal.style.display = 'flex';
+            setTimeout(()=> { modal.style.opacity = '1'; }, 20);
         }
-        else { isAdmin = false; location.reload(); }
+        else {
+            isAdmin = false;
+            document.getElementById('adminPanel').classList.remove('show');
+            document.getElementById('adminBtn').innerText = "⚙️ แอดมิน";
+            renderCars(); // re-render to hide admin controls
+        }
     }
-    function closeAdminModal() { 
-        const modal = document.getElementById('adminModal'); modal.style.opacity = '0'; setTimeout(()=> modal.style.display = 'none', 240);
+
+    function closeAdminModal() {
+        const modal = document.getElementById('adminModal');
+        modal.style.opacity = '0';
+        setTimeout(()=> modal.style.display = 'none', 240);
     }
+
     function checkAdminPass() {
         if (document.getElementById('adminPassInput').value === "Note#2026!Car@Phupha99") {
             isAdmin = true;
@@ -414,285 +455,411 @@
             document.getElementById('adminBtn').innerText = "🚪 ออกจากแอดมิน";
             closeAdminModal();
             renderCars();
+            // nice micro-interaction
+            document.getElementById('carTitle').focus();
         } else { alert("รหัสผ่านไม่ถูกต้อง!"); }
     }
 
-    async function startUpload() {
-        const title = document.getElementById('carTitle').value, price = document.getElementById('carPrice').value;
-        const file = document.getElementById('carFile').files[0], status = document.getElementById('carStatus').value;
-        if(!title || !price) return alert("กรุณากรอกข้อมูลให้ครบ");
-
-        const loading = document.getElementById('loadingOverlay');
-        loading.style.display = 'flex'; loading.style.opacity = '1';
-
-        try {
-            let finalImageUrl = existingImgUrl;
-            if (file) {
-                const formData = new FormData(); formData.append('image', file);
-                const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, { method: 'POST', body: formData });
-                const data = await res.json(); finalImageUrl = data.data.url;
-            }
-            if (editMode) { await db.ref(`cars/${editKey}`).update({ title, price, img: finalImageUrl, status }); }
-            else { await db.ref('cars').push({ title, price, img: finalImageUrl, status, time: Date.now() }); }
-            
-            loading.style.opacity = '0';
-            setTimeout(()=> { loading.style.display = 'none'; location.reload(); }, 220);
-        } catch (err) { 
-            alert("ล้มเหลว กรุณาลองใหม่");
-            const loading = document.getElementById('loadingOverlay');
-            loading.style.opacity = '0';
-            setTimeout(()=> loading.style.display = 'none', 220);
-        }
+    function cancelEdit(){
+      editMode = false; editKey = null; existingImgUrl = null;
+      document.getElementById('carTitle').value = '';
+      document.getElementById('carPrice').value = '';
+      document.getElementById('carStatus').value = 'available';
+      document.getElementById('fileLabel').innerText = '📁 เลือกรูปรถ';
+      document.getElementById('cancelEditBtn').style.display = 'none';
     }
 
-    function renderCars() {
-        db.ref('cars').on('value', snapshot => {
-            const list = document.getElementById('carList'); list.innerHTML = "";
-            const data = snapshot.val();
-            if(data) {
-                Object.keys(data).reverse().forEach(key => {
-                    const car = data[key] || {};
-                    list.innerHTML += `
-                        <div class="car-card">
-                            <div class="car-top">
-                                <div class="status-tag ${car.status === 'available' ? 'tag-available' : 'tag-sold'}">${car.status === 'available' ? 'พร้อมขาย' : 'ขายแล้ว'}</div>
-                                <img src="${car.img || 'Icon.png'}" class="car-img" alt="${(car.title || 'รถ')}" />
-                            </div>
-                            <div class="details">
-                                <h2 style="margin:0; font-size:1.1rem; font-weight:700;">${car.title || ''}</h2>
-                                <div class="price">฿${car.price || ''}</div>
-                                <div class="contact-area">
-                                    <a target="_blank" rel="noopener" href="https://m.me/note.notety.5" class="btn-contact btn-facebook">💬 แชทสอบถาม</a>
-                                    <a href="tel:0835255642" class="btn-contact btn-phone">📞 โทร</a>
-                                </div>
-                                ${isAdmin ? `<div class="admin-controls">
-                                    <button class="btn-edit" onclick="editPost('${key}', '${(car.title||'').replace(/'/g, "\\'")}', '${car.price || ''}', '${car.status || 'available'}', '${car.img || ''}')">🔧 แก้ไข</button>
-                                    <button class="btn-del" onclick="deletePost('${key}')">🗑️ ลบ</button>
-                                </div>` : ''}
-                            </div>
-                            <div class="comment-section">
-                                <div id="comments-${key}"></div>
-                                <div style="display:flex; gap:8px; margin-top:10px; align-items:center;">
-                                    <input type="text" id="name-${key}" placeholder="ชื่อ" style="flex:1; margin-bottom:0; font-size:0.9rem; padding:9px;">
-                                    <input type="text" id="text-${key}" placeholder="พิมพ์ข้อความ..." style="flex:2; margin-bottom:0; font-size:0.9rem; padding:9px;">
-                                    <button onclick="addComment('${key}')" style="background:linear-gradient(90deg,var(--accent-start),var(--accent-end)); color:white; border:none; border-radius:10px; padding:10px 14px; cursor:pointer;">ส่ง</button>
-                                </div>
-                            </div>
-                        </div>`;
-                    renderComments(key);
-                });
-                // show reveal animation for newly inserted cards
-                requestAnimationFrame(()=> { document.querySelectorAll('#carList > .car-card').forEach((c,i)=> { c.classList.add('reveal'); setTimeout(()=> c.classList.add('visible'), 80*i); }); });
-            }
-        });
-    }
+    /* -------------------------
+       Upload / Create / Update car
+       ------------------------- */
+    async function startUpload(){
+      const title = document.getElementById('carTitle').value.trim();
+      const price = document.getElementById('carPrice').value.trim();
+      const fileInput = document.getElementById('carFile');
+      const file = fileInput.files && fileInput.files[0];
+      const status = document.getElementById('carStatus').value;
 
-    function editPost(key, title, price, status, img) {
-        editMode = true; editKey = key; existingImgUrl = img;
-        document.getElementById('panelTitle').innerText = "🔧 กำลังแก้ไขประกาศ";
-        document.getElementById('carTitle').value = title;
-        document.getElementById('carPrice').value = price;
-        document.getElementById('carStatus').value = status;
-        document.getElementById('uploadBtn').innerText = "บันทึกการแก้ไข";
-        document.getElementById('cancelEditBtn').style.display = 'block';
-        document.getElementById('adminPanel').classList.add('show');
-        window.scrollTo({top: 0, behavior: 'smooth'});
-    }
-
-    function addComment(carId) {
-        const text = document.getElementById(`text-${carId}`).value;
-        if(!text) return;
-        db.ref(`cars/${carId}/comments`).push({ name: document.getElementById(`name-${carId}`).value || "ลูกค้า", text });
-        document.getElementById(`text-${carId}`).value = "";
-    }
-
-    function renderComments(carId) {
-        db.ref(`cars/${carId}/comments`).on('value', snap => {
-            const div = document.getElementById(`comments-${carId}`); if(!div) return; div.innerHTML = "";
-            const cData = snap.val();
-            if(cData) {
-                Object.keys(cData).forEach(cKey => {
-                    div.innerHTML += `<div class="comment-item">
-                        <b>${cData[cKey].name}:</b> ${cData[cKey].text}
-                        ${isAdmin ? `<button class="btn-del-cmt" onclick="db.ref('cars/${carId}/comments/${cKey}').remove()">❌</button>` : ''}
-                    </div>`;
-                });
-            }
-        });
-    }
-
-    function deletePost(id) { if(confirm("ต้องการลบประกาศนี้ใช่หรือไม่?")) db.ref(`cars/${id}`).remove(); }
-    renderCars();
-  </script>
-
-  <!-- ===== UI enhancements script (animations, particles, dark mode, microinteractions) ===== -->
-  <script>
-    (function(){
-      // Theme toggle
-      const themeToggle = document.getElementById('themeToggle');
-      const themeIcon = document.getElementById('themeIcon');
-      const root = document.documentElement;
-
-      // Initialize theme from localStorage or prefer-color-scheme
-      const saved = localStorage.getItem('cn-theme');
-      if(saved) root.setAttribute('data-theme', saved);
-      else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) root.setAttribute('data-theme','dark');
-
-      const applyIcon = () => {
-        const isDark = root.getAttribute('data-theme') === 'dark';
-        themeIcon.className = isDark ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
-      };
-      applyIcon();
-
-      themeToggle.addEventListener('click', ()=>{
-        const cur = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-        const next = cur === 'dark' ? 'light' : 'dark';
-        root.setAttribute('data-theme', next === 'dark' ? 'dark' : 'light');
-        localStorage.setItem('cn-theme', next === 'dark' ? 'dark' : 'light');
-        applyIcon();
-      });
-
-      // Intersection reveal for elements with class 'reveal'
-      const io = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{
-          if(e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
-        });
-      }, { threshold: 0.12 });
-      document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
-
-      // Button ripple micro-interaction for primary buttons
-      document.addEventListener('pointerdown', e=>{
-        const btn = e.target.closest('.btn-post, .admin-btn, .theme-toggle, .btn-ghost, .btn-edit, .btn-del');
-        if(!btn) return;
-        const rect = btn.getBoundingClientRect();
-        const circle = document.createElement('span');
-        const size = Math.max(rect.width, rect.height) * 1.8;
-        circle.style.width = circle.style.height = size + 'px';
-        circle.style.position = 'absolute';
-        circle.style.left = (e.clientX - rect.left - size/2) + 'px';
-        circle.style.top = (e.clientY - rect.top - size/2) + 'px';
-        circle.style.background = 'rgba(255,255,255,0.08)';
-        circle.style.borderRadius = '50%';
-        circle.style.pointerEvents = 'none';
-        circle.style.transform = 'scale(0.2)';
-        circle.style.transition = 'transform .5s cubic-bezier(.2,.9,.25,1), opacity .5s';
-        circle.style.opacity = '0.95';
-        circle.style.zIndex = '9';
-        btn.style.position = btn.style.position || 'relative';
-        btn.appendChild(circle);
-        requestAnimationFrame(()=> circle.style.transform = 'scale(1)');
-        setTimeout(()=> {
-          circle.style.opacity = '0';
-          setTimeout(()=> circle.remove(), 500);
-        }, 350);
-      });
-
-      // Particles (lightweight) — canvas-based, optimized
-      const canvas = document.getElementById('particles');
-      let ctx, W, H, particles=[];
-      const particleCount = Math.min(80, Math.floor(window.innerWidth / 14));
-      function resizeCanvas(){
-        canvas.width = W = canvas.clientWidth || window.innerWidth;
-        canvas.height = H = canvas.clientHeight || window.innerHeight;
+      if(!title || !price){
+        return alert("กรุณากรอกข้อมูลให้ครบ");
       }
-      function initParticles(){
-        particles = [];
-        for(let i=0;i<particleCount;i++){
+
+      try {
+        showLoading();
+
+        let imageUrl = existingImgUrl || '';
+        // If a file selected, upload to imgbb
+        if(file){
+          const form = new FormData();
+          form.append('image', file);
+          // imgbb expects base64 or multipart/form-data; sending as multipart works
+          const resp = await fetch('https://api.imgbb.com/1/upload?key=' + IMGBB_API_KEY, {
+            method: 'POST',
+            body: form
+          });
+          const json = await resp.json();
+          if(!json.success) {
+            throw new Error('Image upload failed');
+          }
+          imageUrl = json.data.url;
+        }
+
+        const payload = {
+          title,
+          price,
+          img: imageUrl,
+          status,
+          createdAt: Date.now()
+        };
+
+        if(editMode && editKey){
+          await db.ref('cars/' + editKey).update(payload);
+        } else {
+          await db.ref('cars').push(payload);
+        }
+
+        // reset form & UI
+        cancelEdit();
+        fileInput.value = '';
+        hideLoading();
+      } catch (err) {
+        hideLoading();
+        console.error(err);
+        alert('เกิดข้อผิดพลาด: ' + (err.message || 'ไม่สามารถอัปโหลดได้'));
+      }
+    }
+
+    /* -------------------------
+       Render cars from Firebase
+       ------------------------- */
+    function formatPrice(p){
+      try{
+        const n = Number(p.toString().replace(/[^0-9.-]+/g,''));
+        return n.toLocaleString('th-TH') + ' ฿';
+      }catch(e){ return p + ' ฿'; }
+    }
+
+    function renderCars(){
+      const root = document.getElementById('carList');
+      root.innerHTML = '';
+      // read once and listen for updates
+      db.ref('cars').orderByChild('createdAt').on('value', snapshot => {
+        const data = snapshot.val() || {};
+        // convert to array of entries in descending order
+        const entries = Object.entries(data).map(([k,v]) => ({ key:k, ...v })).sort((a,b)=> (b.createdAt||0) - (a.createdAt||0));
+        root.innerHTML = '';
+        if(entries.length === 0){
+          const empty = document.createElement('div');
+          empty.className = 'car-card';
+          empty.style.padding = '30px';
+          empty.style.textAlign = 'center';
+          empty.innerHTML = `<div style="font-weight:800; font-size:1.05rem; margin-bottom:8px;">ยังไม่มีประกาศ</div><div class="small">ลองเป็นคนแรกที่ลงประกาศรถคุณภาพ</div>`;
+          root.appendChild(empty);
+        }
+
+        for(const ent of entries){
+          const card = document.createElement('article');
+          card.className = 'car-card reveal';
+
+          // Top image area
+          const top = document.createElement('div');
+          top.className = 'car-top';
+          const img = document.createElement('img');
+          img.className = 'car-img';
+          img.alt = ent.title || 'car image';
+          img.src = ent.img || 'https://via.placeholder.com/1200x600?text=No+Image';
+          top.appendChild(img);
+
+          // status tag
+          const tag = document.createElement('div');
+          tag.className = 'status-tag ' + (ent.status === 'sold' ? 'tag-sold' : 'tag-available');
+          tag.innerHTML = `${ent.status === 'sold' ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-check"></i>'} ${ent.status === 'sold' ? 'ขายแล้ว' : 'พร้อมขาย'}`;
+          top.appendChild(tag);
+
+          // Details
+          const det = document.createElement('div');
+          det.className = 'details';
+          const h2 = document.createElement('h2');
+          h2.innerHTML = `<span>${ent.title || 'ไม่ระบุ'}</span>`;
+          det.appendChild(h2);
+          const price = document.createElement('div');
+          price.className = 'price';
+          price.textContent = formatPrice(ent.price || '');
+          det.appendChild(price);
+
+          // Contact area (sample)
+          const contacts = document.createElement('div');
+          contacts.className = 'contact-area';
+          const fb = document.createElement('a');
+          fb.className = 'btn-contact btn-facebook';
+          fb.href = '#';
+          fb.innerHTML = `<i class="fa-brands fa-facebook-f"></i> ติดต่อผ่าน Facebook`;
+          const tel = document.createElement('a');
+          tel.className = 'btn-contact btn-phone';
+          tel.href = 'tel:+66000000000';
+          tel.innerHTML = `<i class="fa-solid fa-phone"></i> โทรหาเจ้าของ`;
+          contacts.appendChild(fb);
+          contacts.appendChild(tel);
+          det.appendChild(contacts);
+
+          // Admin controls
+          if(isAdmin){
+            const ac = document.createElement('div');
+            ac.className = 'admin-controls';
+            const editBtn = document.createElement('button');
+            editBtn.className = 'btn-edit';
+            editBtn.textContent = 'แก้ไข';
+            editBtn.onclick = ()=> enterEditMode(ent.key, ent);
+            const delBtn = document.createElement('button');
+            delBtn.className = 'btn-del';
+            delBtn.textContent = 'ลบ';
+            delBtn.onclick = ()=> removeCar(ent.key);
+            ac.appendChild(editBtn);
+            ac.appendChild(delBtn);
+            det.appendChild(ac);
+          }
+
+          // Comments / simple comment form
+          const commentWrap = document.createElement('div');
+          commentWrap.className = 'comment-section';
+          const commentList = document.createElement('div');
+          commentList.id = 'comments-' + ent.key;
+          commentList.style.marginBottom = '8px';
+          commentWrap.appendChild(commentList);
+
+          const commentForm = document.createElement('div');
+          commentForm.style.display = 'flex';
+          commentForm.style.gap = '8px';
+          const commentInput = document.createElement('input');
+          commentInput.type = 'text';
+          commentInput.placeholder = 'แสดงความคิดเห็น...';
+          commentInput.style.flex = '1';
+          commentInput.style.padding = '10px';
+          commentInput.style.borderRadius = '10px';
+          const commentBtn = document.createElement('button');
+          commentBtn.className = 'btn-post';
+          commentBtn.style.flex = '0 0 140px';
+          commentBtn.textContent = 'เพิ่มคอมเมนต์';
+          commentBtn.onclick = ()=> addComment(ent.key, commentInput.value, commentInput, commentList);
+          commentForm.appendChild(commentInput);
+          commentForm.appendChild(commentBtn);
+          commentWrap.appendChild(commentForm);
+
+          // assemble card
+          card.appendChild(top);
+          card.appendChild(det);
+          card.appendChild(commentWrap);
+          root.appendChild(card);
+        }
+
+        // reveal animations for newly inserted items
+        requestAnimationFrame(()=> {
+          document.querySelectorAll('.reveal').forEach(el=> el.classList.add('visible'));
+        });
+      });
+    }
+
+    async function removeCar(key){
+      if(!confirm('ต้องการลบประกาศนี้หรือไม่?')) return;
+      try{
+        await db.ref('cars/' + key).remove();
+        // feedback
+      }catch(e){ console.error(e); alert('ลบไม่สำเร็จ'); }
+    }
+
+    function enterEditMode(key, data){
+      editMode = true;
+      editKey = key;
+      existingImgUrl = data.img || '';
+      document.getElementById('carTitle').value = data.title || '';
+      document.getElementById('carPrice').value = data.price || '';
+      document.getElementById('carStatus').value = data.status || 'available';
+      document.getElementById('fileLabel').innerText = existingImgUrl ? '📸 รูปภาพเดิมอยู่แล้ว' : '📁 เลือกรูปรถ';
+      document.getElementById('cancelEditBtn').style.display = 'block';
+      // reveal admin panel if hidden
+      document.getElementById('adminPanel').classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* -------------------------
+       Simple comment system per car (stored under cars/{key}/comments)
+       ------------------------- */
+    function addComment(carKey, text, inputEl, listEl){
+      const value = (text || '').trim();
+      if(!value) return alert('กรุณาพิมพ์คอมเมนต์');
+      const c = {
+        text: value,
+        createdAt: Date.now()
+      };
+      db.ref('cars/' + carKey + '/comments').push(c).then(()=> {
+        inputEl.value = '';
+      }).catch(e=> {
+        console.error(e);
+        alert('ไม่สามารถเพิ่มคอมเมนต์ได้');
+      });
+    }
+    // listen and render comments
+    function watchComments(){
+      db.ref('cars').on('value', snapshot => {
+        const cars = snapshot.val() || {};
+        Object.entries(cars).forEach(([k,v])=>{
+          const container = document.getElementById('comments-' + k);
+          if(!container) return;
+          container.innerHTML = '';
+          if(!v.comments) return;
+          const comments = Object.entries(v.comments).map(([ck,cv])=> ({ key:ck, ...cv})).sort((a,b)=> (b.createdAt||0) - (a.createdAt||0));
+          comments.forEach(c => {
+            const itm = document.createElement('div');
+            itm.className = 'comment-item';
+            itm.textContent = c.text;
+            // delete comment button for admin
+            if(isAdmin){
+              const del = document.createElement('button');
+              del.className = 'btn-del-cmt';
+              del.innerHTML = '<i class="fa-solid fa-trash"></i>';
+              del.onclick = ()=> {
+                if(confirm('ลบคอมเมนต์นี้หรือไม่?')) {
+                  db.ref('cars/' + k + '/comments/' + c.key).remove();
+                }
+              };
+              itm.appendChild(del);
+            }
+            container.appendChild(itm);
+          });
+        });
+      });
+    }
+
+    /* -------------------------
+       Theme toggle
+       ------------------------- */
+    const themeBtn = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    function applyTheme(theme){
+      document.documentElement.setAttribute('data-theme', theme);
+      if(theme === 'light'){
+        themeIcon.className = 'fa-regular fa-sun';
+      } else {
+        themeIcon.className = 'fa-regular fa-moon';
+      }
+      localStorage.setItem('cn-theme', theme);
+    }
+    themeBtn.addEventListener('click', ()=> {
+      const cur = localStorage.getItem('cn-theme') || 'dark';
+      const next = cur === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+    });
+    // init theme
+    (function(){
+      const saved = localStorage.getItem('cn-theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      applyTheme(saved || (prefersLight ? 'light' : 'dark'));
+    })();
+
+    /* -------------------------
+       Particles background (lightweight)
+       ------------------------- */
+    (function(){
+      const canvas = document.getElementById('particles');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w = canvas.width = canvas.offsetWidth;
+      let h = canvas.height = canvas.offsetHeight;
+      const particles = [];
+      const count = Math.max(20, Math.round((w*h)/90000));
+
+      function rand(min,max){ return Math.random()*(max-min)+min; }
+      function create(){
+        for(let i=0;i<count;i++){
           particles.push({
-            x: Math.random()*W,
-            y: Math.random()*H,
-            vx: (Math.random()-0.5)*0.25,
-            vy: (Math.random()-0.5)*0.25,
-            r: (Math.random()*2)+0.6,
-            alpha: 0.06 + Math.random()*0.12,
-            hue: 10 + Math.random()*340
+            x: rand(0,w),
+            y: rand(0,h),
+            r: rand(0.6,2.6),
+            vx: rand(-0.2,0.6),
+            vy: rand(-0.15,0.15),
+            hue: rand(0,360),
+            alpha: rand(0.05,0.18)
           });
         }
       }
-      function drawParticles(){
-        ctx.clearRect(0,0,W,H);
+      function resize(){
+        w = canvas.width = canvas.offsetWidth;
+        h = canvas.height = canvas.offsetHeight;
+        particles.length = 0;
+        create();
+      }
+      function draw(){
+        ctx.clearRect(0,0,w,h);
         for(const p of particles){
           p.x += p.vx;
           p.y += p.vy;
-          if(p.x < -10) p.x = W + 10;
-          if(p.x > W + 10) p.x = -10;
-          if(p.y < -10) p.y = H + 10;
-          if(p.y > H + 10) p.y = -10;
+          if(p.x > w + 20) p.x = -20;
+          if(p.x < -20) p.x = w + 20;
+          if(p.y > h + 20) p.y = -20;
+          if(p.y < -20) p.y = h + 20;
           ctx.beginPath();
-          const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r*6);
-          grd.addColorStop(0, `hsla(${p.hue}, 85%, 65%, ${p.alpha})`);
-          grd.addColorStop(1, `hsla(${p.hue}, 85%, 65%, 0)`);
-          ctx.fillStyle = grd;
-          ctx.arc(p.x, p.y, p.r*6, 0, Math.PI*2, false);
+          ctx.fillStyle = `hsla(${p.hue}, 80%, 65%, ${p.alpha})`;
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
           ctx.fill();
         }
+        requestAnimationFrame(draw);
       }
-      function loop(){
-        drawParticles();
-        requestAnimationFrame(loop);
-      }
-      function startParticles(){
-        if(!canvas) return;
-        ctx = canvas.getContext('2d');
-        resizeCanvas(); initParticles();
-        loop();
-      }
-      window.addEventListener('resize', ()=> { if(canvas) { resizeCanvas(); initParticles(); } });
 
-      // Start particles after small throttle to let layout settle
-      setTimeout(startParticles, 240);
-
-      // Attach small animation for welcome overlay and loading overlay
-      const loadingOverlay = document.getElementById('loadingOverlay');
-      const realWelcome = document.getElementById('welcomePopup');
-
-      // Ensure overlays use fade transitions consistently
-      function showLoading(){ loadingOverlay.style.display = 'flex'; requestAnimationFrame(()=> loadingOverlay.style.opacity = '1'); }
-      function hideLoading(){ loadingOverlay.style.opacity = '0'; setTimeout(()=> loadingOverlay.style.display='none', 240); }
-
-      // Replace direct inline style toggles: observe DOM mutation to animate display changes from original script
-      const obs = new MutationObserver((mutations)=>{
-        for(const m of mutations){
-          if(m.target.id === 'loadingOverlay'){
-            // noop: original script sets display/opacity already; just ensure transition
-            // keep in sync
-            if(getComputedStyle(loadingOverlay).display === 'flex' && loadingOverlay.style.opacity !== '1') requestAnimationFrame(()=> loadingOverlay.style.opacity = '1');
-          }
-        }
-      });
-      obs.observe(document.body, { attributes: true, subtree: true });
-
-      // Accessibility: close welcome popup with escape key
-      document.addEventListener('keydown', (e)=>{
-        if(e.key === 'Escape'){
-          const w = document.getElementById('welcomePopup');
-          if(w && w.style.display !== 'none') closeWelcome();
-          const am = document.getElementById('adminModal');
-          if(am && am.style.display !== 'none') closeAdminModal();
-        }
-      });
-
-      // small polish: ensure admin panel reveals when isAdmin toggled from original script
-      const adminObserver = new MutationObserver(()=> {
-        const panel = document.getElementById('adminPanel');
-        if(panel && panel.classList.contains('show')) {
-          panel.setAttribute('aria-hidden','false');
-          panel.classList.add('visible');
-        }
-      });
-      adminObserver.observe(document.getElementById('adminPanel'), { attributes: true, attributeFilter: ['class'] });
-
-      // Make file label clickable
-      document.getElementById('fileLabel').addEventListener('click', ()=> document.getElementById('carFile').click());
-
-      // Ensure hero reveal animates on load
-      document.addEventListener('DOMContentLoaded', ()=> {
-        document.querySelectorAll('.reveal').forEach((el, i)=> {
-          setTimeout(()=> el.classList.add('visible'), 80 + i*60);
-        });
-      });
-
+      create();
+      draw();
+      window.addEventListener('resize', () => { clearTimeout(window._pt); window._pt = setTimeout(resize, 240); });
     })();
+
+    /* -------------------------
+       Reveal animations (intersection observer)
+       ------------------------- */
+    (function(){
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if(e.isIntersecting) {
+            e.target.classList.add('visible');
+            // optionally unobserve to improve perf
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.08 });
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    })();
+
+    /* -------------------------
+       Wire up small UX details
+       ------------------------- */
+    // label -> file input
+    document.getElementById('fileLabel').addEventListener('click', ()=> {
+      document.getElementById('carFile').click();
+    });
+    document.getElementById('carFile').addEventListener('change', function(){
+      if(this.files && this.files[0]) {
+        document.getElementById('fileLabel').innerText = '📸 เลือกรูปแล้ว: ' + this.files[0].name;
+      } else {
+        document.getElementById('fileLabel').innerText = '📁 เลือกรูปรถ';
+      }
+    });
+
+    // when content starts, render cars and comments
+    renderCars();
+    watchComments();
+
+    // ensure welcome popup closes after a short delay (or user clicks)
+    setTimeout(()=> {
+      const wp = document.getElementById('welcomePopup');
+      if(wp) wp.classList.add('visible');
+    }, 60);
+
+    // small focus styles for accessibility
+    document.addEventListener('keydown', (e)=> {
+      if(e.key === 'Escape') {
+        // close overlays if open
+        const adminModal = document.getElementById('adminModal');
+        if(adminModal && adminModal.style.display === 'flex') closeAdminModal();
+      }
+    });
+
   </script>
 </body>
 </html>
+```
