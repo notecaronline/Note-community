@@ -1,0 +1,53 @@
+:root { 
+    --accent: #fb8c00; 
+    --accent-dark: #ef6c00; 
+    --dark: #334155; 
+    --bg: #fdfcfb; 
+    --success: #16a34a; 
+    --danger: #dc2626; 
+    --gray: #64748b; 
+}
+
+body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--dark); }
+
+nav { background: var(--accent); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; height: 50px; box-sizing: border-box; }
+nav h1 { margin: 0; color: white; font-size: 1.1rem; }
+
+.admin-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 5px 12px; border-radius: 8px; cursor: pointer; }
+
+.hero-banner {
+    width: 100%; height: 140px;
+    background: linear-gradient(rgba(251, 140, 0, 0.85), rgba(239, 108, 0, 0.85)), url('Icon.png'); 
+    background-size: cover; background-position: center;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; color: white;
+}
+
+.welcome-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 2000; padding: 20px; box-sizing: border-box; }
+.welcome-card { background: white; padding: 25px; border-radius: 20px; text-align: center; max-width: 340px; width: 100%; border: 2px solid var(--accent); }
+.welcome-img { width: 100px; height: 100px; border-radius: 18px; margin-bottom: 15px; object-fit: cover; }
+
+.container { width: 92%; max-width: 500px; margin: 15px auto; }
+
+#adminPanel { background: white; padding: 15px; border-radius: 15px; border: 1px solid #ffe0b2; margin-bottom: 20px; display: none; }
+input, select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 10px; box-sizing: border-box; }
+
+.file-label { display:block; padding:10px; background:#fff7ed; border:1px dashed var(--accent); border-radius:8px; text-align:center; cursor:pointer; color:var(--accent-dark); font-size:0.8rem; margin-bottom:10px; }
+
+.btn-post { width: 100%; background: var(--accent); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+
+.car-card { background: white; border-radius: 15px; overflow: hidden; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; position: relative; }
+.status-tag { position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 6px; color: white; font-size: 0.65rem; font-weight: bold; z-index: 10; }
+.tag-available { background: var(--success); }
+.tag-sold { background: var(--danger); }
+.car-img { width: 100%; height: 220px; object-fit: cover; }
+
+.details { padding: 15px; }
+.price { font-size: 1.4rem; color: var(--accent-dark); font-weight: 700; }
+.contact-area { display: flex; gap: 8px; margin-top: 10px; }
+.btn-contact { flex: 1; display: flex; align-items: center; justify-content: center; padding: 10px; border-radius: 8px; text-decoration: none; color: white; font-size: 0.8rem; font-weight: 600; }
+.btn-facebook { background: #1877F2; }
+.btn-phone { background: var(--accent); }
+
+.admin-controls { display: flex; gap: 5px; margin-top: 10px; }
+.btn-edit { background: #f59e0b; color: white; border: none; flex: 1; padding: 6px; border-radius: 6px; cursor: pointer; }
+.btn-del { background: #ef4444; color: white; border: none; flex: 1; padding: 6px; border-radius: 6px; cursor: pointer; }
